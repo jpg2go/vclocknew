@@ -572,6 +572,7 @@ const AlarmClock: React.FC = () => {
             <button
               className={`p-2 rounded transition-colors ${
                 isFullscreen 
+                  ? 'hover:bg-gray-800 text-white'
                   : 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300'
               }`}
               title="Share"
