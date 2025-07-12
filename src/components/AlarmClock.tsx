@@ -570,19 +570,19 @@ const AlarmClock: React.FC = () => {
           </button>
           <div className="relative" ref={shareRef}>
             <button
-              className={`p-2 rounded transition-colors ${
+              className={`p-1 sm:p-2 rounded transition-colors ${
                 isFullscreen 
-                  ? 'hover:bg-gray-800 text-white' 
+              className={`p-1 sm:p-2 rounded transition-colors ${
                   : 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300'
               }`}
               title="Share"
               aria-label="Share"
-              onClick={() => setShowShare(s => !s)}
+              <ZoomOut className="w-3 h-3 sm:w-4 sm:h-4" />
             >
               <Share2 className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
-            </button>
+                <Minimize2 className="w-3 h-3 sm:w-4 sm:h-4" />
             {showShare && (
-              <>
+                <Maximize2 className="w-3 h-3 sm:w-4 sm:h-4" />
                 {/* Caret Arrow */}
                 <div className="absolute right-4 sm:right-6 -top-2 z-50 hidden sm:block">
                   <svg width="24" height="12" viewBox="0 0 24 12"><polygon points="12,0 24,12 0,12" fill="#fff" style={{filter:'drop-shadow(0 2px 4px rgba(0,0,0,0.08))'}} /></svg>
@@ -624,7 +624,7 @@ const AlarmClock: React.FC = () => {
               isFullscreen ? 'text-white' : 'text-black'
             }`}
             style={{ 
-              fontSize: `${Math.round(isFullscreen ? fontSize * 1.5 : Math.min(fontSize, window.innerWidth * 0.12))}px`,
+              fontSize: `${Math.round(isFullscreen ? fontSize * 1.2 : Math.min(fontSize, window.innerWidth * 0.18))}px`,
               fontWeight: 900,
               color: isFullscreen ? '#fff' : '#555555',
               letterSpacing: '0.04em',
@@ -633,21 +633,21 @@ const AlarmClock: React.FC = () => {
           >
             {/* Split time and AM/PM for styling */}
             <span>{formatTime(currentTime).replace(/\s?(AM|PM)$/i, '')}</span>
-            <span style={{ fontSize: '0.35em', marginLeft: '0.25em', fontWeight: 400, letterSpacing: '0.08em', verticalAlign: 'baseline' }}>
+            <span style={{ fontSize: '0.3em', marginLeft: '0.2em', fontWeight: 400, letterSpacing: '0.08em', verticalAlign: 'baseline' }}>
               {formatTime(currentTime).match(/(AM|PM)$/i)?.[0]}
             </span>
           </div>
           <div className={`tracking-wide font-medium font-bold mt-2 sm:mt-0 ${
             isFullscreen 
-              ? 'text-gray-300 text-xl sm:text-2xl md:text-3xl' 
-              : 'text-gray-500 text-xs sm:text-sm md:text-base lg:text-xl'
+              ? 'text-gray-300' 
+              : 'text-gray-500'
           } font-nunito`} style={{
             color: '#555555',
             letterSpacing: '0.18em',
             textAlign: 'center',
             textTransform: 'uppercase',
             fontWeight: 900,
-            fontSize: isFullscreen ? 'clamp(1.5rem, 5vw, 3rem)' : 'clamp(0.75rem, 3vw, 1.5rem)',
+            fontSize: isFullscreen ? 'clamp(1rem, 4vw, 2rem)' : 'clamp(0.6rem, 2.5vw, 1rem)',
           }}>
             {formatDate(currentTime)}
           </div>
@@ -656,7 +656,7 @@ const AlarmClock: React.FC = () => {
         {!isFullscreen && (
           <button 
             onClick={openAlarmModal}
-            className="mt-3 sm:mt-4 md:mt-6 bg-green-500 hover:bg-green-600 text-white px-3 sm:px-4 md:px-6 py-2 text-xs sm:text-sm md:text-base rounded-md font-medium transition-colors shadow-sm"
+            className="mt-3 sm:mt-4 md:mt-6 bg-green-500 hover:bg-green-600 text-white px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base rounded-md font-medium transition-colors shadow-sm"
           >
             Set Alarm
           </button>
@@ -665,33 +665,33 @@ const AlarmClock: React.FC = () => {
 
       {/* Active Alarms List */}
       {!isFullscreen && alarms.length > 0 && (
-        <div className="p-2 sm:p-3 md:p-4 lg:p-6">
-          <div className="bg-white dark:bg-black rounded-lg p-3 sm:p-4 md:p-6 border border-gray-200 dark:border-gray-700">
+        <div className="p-3 sm:p-4 md:p-6">
+          <div className="bg-white dark:bg-black rounded-lg p-4 sm:p-6 border border-gray-200 dark:border-gray-700">
             <h3 className="text-sm sm:text-base md:text-lg font-medium text-gray-800 dark:text-white mb-2 sm:mb-3 md:mb-4">Active Alarms</h3>
             <div className="space-y-2 sm:space-y-3">
               {alarms.map((alarm) => (
-                <div key={alarm.id} className="flex items-center justify-between p-2 sm:p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                <div key={alarm.id} className="flex items-center justify-between p-3 sm:p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
                   <div className="flex items-center space-x-2 sm:space-x-3">
                     <button
                       onClick={() => toggleAlarm(alarm.id)}
-                      className={`w-8 sm:w-10 md:w-12 h-4 sm:h-5 md:h-6 rounded-full transition-colors ${
+                      className={`w-10 sm:w-12 h-5 sm:h-6 rounded-full transition-colors ${
                         alarm.isActive ? 'bg-green-500' : 'bg-gray-300'
                       }`}
                     >
-                      <div className={`w-3 sm:w-4 md:w-5 h-3 sm:h-4 md:h-5 bg-white rounded-full transition-transform ${
-                        alarm.isActive ? 'translate-x-4 sm:translate-x-5 md:translate-x-6' : 'translate-x-1'
+                      <div className={`w-4 sm:w-5 h-4 sm:h-5 bg-white rounded-full transition-transform ${
+                        alarm.isActive ? 'translate-x-5 sm:translate-x-6' : 'translate-x-1'
                       }`} />
                     </button>
                     <div>
-                      <div className="text-xs sm:text-sm md:text-base font-medium text-gray-800 dark:text-white">{alarm.time}</div>
+                      <div className="text-sm sm:text-base font-medium text-gray-800 dark:text-white">{alarm.time}</div>
                       <div className="text-xs text-gray-600 dark:text-gray-400">{alarm.label}</div>
                     </div>
                   </div>
                   <button
                     onClick={() => deleteAlarm(alarm.id)}
-                    className="text-red-500 hover:text-red-700 p-1"
+                    className="text-red-500 hover:text-red-700 p-2"
                   >
-                    <X className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <X className="w-4 h-4" />
                   </button>
                 </div>
               ))}
@@ -702,32 +702,32 @@ const AlarmClock: React.FC = () => {
 
       {/* Alarm Settings Section */}
       {!isFullscreen && (
-      <div className="p-2 sm:p-3 md:p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
+      <div className="p-3 sm:p-4 md:p-6 grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Set Alarm Times */}
-        <div className="bg-white dark:bg-black rounded-lg p-3 sm:p-4 md:p-6 border border-gray-200 dark:border-gray-700">
-          <h3 className="text-sm sm:text-base md:text-lg font-medium text-gray-800 dark:text-white mb-2 sm:mb-3 md:mb-4">
+        <div className="bg-white dark:bg-black rounded-lg p-4 sm:p-6 border border-gray-200 dark:border-gray-700">
+          <h3 className="text-base sm:text-lg font-medium text-gray-800 dark:text-white mb-3 sm:mb-4">
             Set the alarm for the specified time
-          </h3>
-          
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1 sm:gap-2">
+                className={`p-1 sm:p-2 rounded transition-colors ${
+              <ZoomIn className="w-3 h-3 sm:w-4 sm:h-4" />
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
             {timeSlots.map((time, index) => (
               <button
                 key={index}
                 onClick={() => setSelectedTime(time)}
-                className="px-1 sm:px-2 md:px-3 py-1 sm:py-2 text-xs sm:text-sm rounded transition-colors bg-[#00A1F7] text-white hover:bg-[#0086c3]"
+                className="px-2 sm:px-3 py-2 text-xs sm:text-sm rounded transition-colors bg-[#00A1F7] text-white hover:bg-[#0086c3]"
               >
-                {time}
+                <Share2 className="w-3 h-3 sm:w-4 sm:h-4" />
               </button>
             ))}
           </div>
         </div>
 
         {/* Recently Used */}
-        <div className="bg-white dark:bg-black rounded-lg p-3 sm:p-4 md:p-6 border border-gray-200 dark:border-gray-700">
-          <div className="flex items-center justify-between mb-2 sm:mb-3 md:mb-4">
-            <h3 className="text-sm sm:text-base md:text-lg font-medium text-gray-800 dark:text-white">Recently used</h3>
+        <div className="bg-white dark:bg-black rounded-lg p-4 sm:p-6 border border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-between mb-3 sm:mb-4">
+            <h3 className="text-base sm:text-lg font-medium text-gray-800 dark:text-white">Recently used</h3>
             <button className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300">
-              <svg className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
@@ -735,14 +735,14 @@ const AlarmClock: React.FC = () => {
           
           <div className="space-y-2">
             {recentlyUsed.map((alarm, index) => (
-              <div key={index} className="flex items-center justify-between py-1">
+              <div key={index} className="flex items-center justify-between py-2">
                 <span 
-                  className="text-blue-500 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 cursor-pointer text-xs sm:text-sm"
+                  className="text-blue-500 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 cursor-pointer text-sm"
                   onClick={() => setSelectedTime(alarm.time)}
                 >
                   {alarm.label}
                 </span>
-                <span className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm">{alarm.time}</span>
+                <span className="text-gray-600 dark:text-gray-400 text-sm">{alarm.time}</span>
               </div>
             ))}
           </div>
@@ -752,16 +752,16 @@ const AlarmClock: React.FC = () => {
 
       {/* Instructions */}
       {!isFullscreen && (
-      <div className="p-3 sm:p-4 md:p-6 bg-white dark:bg-black mx-2 sm:mx-3 md:mx-6 rounded-lg border border-gray-200 dark:border-gray-700" style={{ marginBottom: '20px' }}>
-        <h3 className="text-sm sm:text-base md:text-lg font-medium text-gray-800 dark:text-white mb-2 sm:mb-3 md:mb-4">
+      <div className="p-4 sm:p-6 bg-white dark:bg-black mx-3 sm:mx-6 rounded-lg border border-gray-200 dark:border-gray-700 mb-6">
+        <h3 className="text-base sm:text-lg font-medium text-gray-800 dark:text-white mb-3 sm:mb-4">
           How to Use the Online Alarm Clock
         </h3>
         
-        <div className="space-y-2 sm:space-y-3 text-gray-600 dark:text-gray-300 text-xs sm:text-sm">
+        <div className="space-y-3 text-gray-600 dark:text-gray-300 text-sm">
           <p>
             Need a reliable alarm clock right in your browser? You’re in the perfect spot. Setting an alarm here is quick and easy—just pick your time, choose a sound, and add a label if you want. When your alarm goes off, you’ll see a message and hear your chosen sound, even if you’re working in another tab.
           </p>
-          <ul className="list-disc pl-3 sm:pl-4 md:pl-6 space-y-1">
+          <ul className="list-disc pl-4 sm:pl-6 space-y-1">
             <li><strong>Set your alarm:</strong> Select the hour and minute, pick a sound you like, and add a label to remember what it’s for.</li>
             <li><strong>Test before you trust:</strong> Hit the “Test” button to make sure the alert and volume are just right.</li>
             <li><strong>Personalize it:</strong> Change the look and feel—adjust the text color, style, and size. Your preferences are saved for next time.</li>
