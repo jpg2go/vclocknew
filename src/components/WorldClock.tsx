@@ -241,21 +241,21 @@ const WorldClock: React.FC = () => {
           className={
             isFullscreen
               ? 'fixed inset-0 z-50 flex flex-col justify-center items-center bg-black text-white border-0 text-center'
-              : 'bg-white dark:bg-black border-b border-gray-200 text-center relative p-3 sm:p-6 lg:p-8'
+              : 'bg-white dark:bg-black border-b border-gray-200 dark:border-gray-700 text-center relative p-2 sm:p-4 md:p-6 lg:p-8 xl:p-12'
           }
         >
-          <div className="absolute top-2 sm:top-4 right-2 sm:right-4 flex space-x-1 sm:space-x-2">
+          <div className="absolute top-1 sm:top-2 md:top-4 right-1 sm:right-2 md:right-4 flex space-x-1">
             <button 
               onClick={decreaseFontSize}
               aria-label="Decrease font size"
               className={`p-2 rounded transition-colors ${
                 isFullscreen 
                   ? 'hover:bg-gray-800 text-white' 
-                  : 'hover:bg-gray-100 text-gray-600'
+                  : 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300'
               }`}
               title="Decrease font size"
             >
-              <ZoomOut className="w-4 h-4 sm:w-5 sm:h-5" />
+              <ZoomOut className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
             </button>
             <button 
               onClick={increaseFontSize}
@@ -263,24 +263,24 @@ const WorldClock: React.FC = () => {
               className={`p-2 rounded transition-colors ${
                 isFullscreen 
                   ? 'hover:bg-gray-800 text-white' 
-                  : 'hover:bg-gray-100 text-gray-600'
+                  : 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300'
               }`}
               title="Increase font size"
             >
-              <ZoomIn className="w-4 h-4 sm:w-5 sm:h-5" />
+              <ZoomIn className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
             </button>
             <div className="relative" ref={shareRef}>
               <button
                 className={`p-2 rounded transition-colors ${
                   isFullscreen 
                     ? 'hover:bg-gray-800 text-white' 
-                    : 'hover:bg-gray-100 text-gray-600'
+                    : 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300'
                 }`}
                 title="Share"
                 aria-label="Share"
                 onClick={() => setShowShare(s => !s)}
               >
-                <Share2 className="w-4 h-4 sm:w-5 sm:h-5" />
+                <Share2 className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
               </button>
               {showShare && (
                 <>
@@ -308,26 +308,27 @@ const WorldClock: React.FC = () => {
               className={`p-2 rounded transition-colors ${
                 isFullscreen 
                   ? 'hover:bg-gray-800 text-white' 
-                  : 'hover:bg-gray-100 text-gray-600'
+                  : 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300'
               }`}
               title={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
             >
               {isFullscreen ? (
-                <Minimize2 className="w-4 h-4 sm:w-5 sm:h-5" />
+                <Minimize2 className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
               ) : (
-                <Maximize2 className="w-4 h-4 sm:w-5 sm:h-5" />
+                <Maximize2 className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
               )}
             </button>
           </div>
-          <div className="w-full flex flex-col items-center justify-center py-2 sm:py-4 lg:py-6">
+          <div className="w-full flex flex-col items-center justify-center py-2 sm:py-4 md:py-6 lg:py-8 px-2 sm:px-4">
             <div className="flex flex-col items-center justify-center">
               <div 
-                className="font-nunito text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-gray-700 mb-1 sm:mb-2" style={{
+                className={`font-nunito ${isFullscreen ? 'text-white' : 'text-gray-700 dark:text-white'}`} style={{
                   color: isFullscreen ? '#ffffff' : '#555555',
                   letterSpacing: '0.04em',
                   fontWeight: 900,
                   textAlign: 'center',
-                  fontSize: `${fontSize}px`,
+                  fontSize: `${Math.min(fontSize, window.innerWidth * 0.15)}px`,
+                  lineHeight: 1.1,
                 }}>
                 {/* Always show 12-hour format with AM/PM */}
                 {(() => {
@@ -335,15 +336,18 @@ const WorldClock: React.FC = () => {
                   const [time, ampm] = time12.split(' ');
                   return <>
                     <span>{time.replace(/^0/, '')}</span>
-                    <span style={{ fontSize: '0.35em', marginLeft: '0.25em', fontWeight: 400, letterSpacing: '0.08em', verticalAlign: 'baseline' }}>{ampm}</span>
+                    <span style={{ fontSize: `${Math.round(Math.min(fontSize, window.innerWidth * 0.15) * 0.35)}px`, marginLeft: '0.25em', fontWeight: 400, letterSpacing: '0.08em', verticalAlign: 'baseline', color: isFullscreen ? '#fff' : undefined }}>{ampm}</span>
                   </>;
                 })()}
               </div>
-              <div className="font-nunito text-sm sm:text-base md:text-lg lg:text-xl text-gray-500 font-bold" style={{
+              <div
+                className={`font-nunito text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl font-bold mt-1 sm:mt-2 ${isFullscreen ? 'text-white' : 'text-gray-500 dark:text-gray-300'}`}
+                style={{
                 color: isFullscreen ? '#ffffff' : '#555555',
                 letterSpacing: '0.18em',
                 fontWeight: 900,
                 textAlign: 'center',
+                fontSize: isFullscreen ? 'clamp(1.5rem, 5vw, 3rem)' : 'clamp(0.75rem, 3vw, 1.5rem)',
               }}>
                 {formatDate(currentTime)}
               </div>
@@ -352,7 +356,7 @@ const WorldClock: React.FC = () => {
         </div>
 
         {/* City Clocks Grid */}
-        <div className="bg-white dark:bg-black border-b border-gray-200 dark:border-gray-700 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 p-4 sm:p-6 lg:p-8 xl:p-12 mb-4 sm:mb-6" style={{ marginTop: '15px' }}>
+        <div className="bg-white dark:bg-black border-b border-gray-200 dark:border-gray-700 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 lg:gap-6 p-2 sm:p-3 md:p-4 lg:p-6 xl:p-8 mb-3 sm:mb-4 md:mb-6" style={{ marginTop: '15px' }}>
           {cities.map(city => {
             const diff = getTimeDiff(localTz, city.tz, currentTime);
             const time24 = times[city.tz] || getTimeInZone(city.tz, { hour12: false }, currentTime);
@@ -360,7 +364,7 @@ const WorldClock: React.FC = () => {
               <Link
                 key={city.tz}
                 to={getCityUrl(city.name)}
-                className="bg-gray-50 dark:bg-gray-800 rounded-lg shadow p-3 sm:p-6 flex flex-col items-center relative border border-gray-200 dark:border-gray-600 min-h-[100px] sm:min-h-[120px] justify-center hover:shadow-lg transition-shadow cursor-pointer group"
+                className="bg-gray-50 dark:bg-gray-800 rounded-lg shadow p-2 sm:p-3 md:p-4 lg:p-6 flex flex-col items-center relative border border-gray-200 dark:border-gray-600 min-h-[80px] sm:min-h-[100px] md:min-h-[120px] justify-center hover:shadow-lg transition-shadow cursor-pointer group"
               >
                 <button
                   onClick={(e) => {
@@ -368,12 +372,12 @@ const WorldClock: React.FC = () => {
                     e.stopPropagation();
                     removeCity(city.tz);
                   }}
-                  className="absolute top-2 right-2 text-gray-400 hover:text-red-500 text-lg dark:text-gray-500 dark:hover:text-red-400 z-10"
+                  className="absolute top-1 right-1 sm:top-2 sm:right-2 text-gray-400 hover:text-red-500 text-sm sm:text-lg dark:text-gray-500 dark:hover:text-red-400 z-10"
                   title="Remove city"
                   aria-label={`Remove ${city.name}`}
                 >×</button>
-                <div className="text-sm sm:text-base font-medium mb-2 text-center text-gray-800 dark:text-white px-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{city.name}</div>
-                <div className="font-nunito text-xl sm:text-3xl mb-1" style={{
+                <div className="text-xs sm:text-sm md:text-base font-medium mb-1 sm:mb-2 text-center text-gray-800 dark:text-white px-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-tight">{city.name}</div>
+                <div className="font-nunito text-lg sm:text-xl md:text-2xl lg:text-3xl mb-1" style={{
                   color: '#555555',
                   fontWeight: 900,
                   letterSpacing: '0.04em',
@@ -381,32 +385,32 @@ const WorldClock: React.FC = () => {
                 }}>
                   {time24}
                 </div>
-                <div className="text-gray-500 dark:text-gray-400 text-xs">Today{diff ? `, ${diff}` : ''}</div>
+                <div className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm">Today{diff ? `, ${diff}` : ''}</div>
               </Link>
             );
           })}
           {/* Add City Card */}
-          <div className="flex flex-col items-center justify-center min-h-[100px] sm:min-h-[120px] border-2 border-dashed border-blue-400 bg-blue-50 dark:bg-blue-900 rounded-xl transition-shadow hover:shadow-lg cursor-pointer group">
+          <div className="flex flex-col items-center justify-center min-h-[80px] sm:min-h-[100px] md:min-h-[120px] border-2 border-dashed border-blue-400 bg-blue-50 dark:bg-blue-900 rounded-xl transition-shadow hover:shadow-lg cursor-pointer group">
             <button
-              className="flex flex-col items-center justify-center gap-2 text-blue-600 dark:text-blue-300 bg-white dark:bg-gray-800 border-2 border-blue-400 dark:border-blue-500 rounded-full w-12 h-12 sm:w-16 sm:h-16 text-2xl sm:text-4xl font-bold shadow-sm group-hover:bg-blue-100 dark:group-hover:bg-blue-800 transition-colors"
+              className="flex flex-col items-center justify-center gap-1 sm:gap-2 text-blue-600 dark:text-blue-300 bg-white dark:bg-gray-800 border-2 border-blue-400 dark:border-blue-500 rounded-full w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 text-lg sm:text-2xl md:text-4xl font-bold shadow-sm group-hover:bg-blue-100 dark:group-hover:bg-blue-800 transition-colors"
               style={{ outline: 'none' }}
               onClick={() => setShowAddModal(true)}
               aria-label="Add city"
             >
-              <svg width="24" height="24" className="sm:w-8 sm:h-8" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="16" y1="6" x2="16" y2="26" /><line x1="6" y1="16" x2="26" y2="16" /></svg>
+              <svg width="16" height="16" className="sm:w-6 sm:h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="6" x2="12" y2="18" /><line x1="6" y1="12" x2="18" y2="12" /></svg>
             </button>
-            <span className="mt-2 sm:mt-3 text-blue-700 dark:text-blue-300 font-medium text-sm sm:text-lg group-hover:text-blue-900 dark:group-hover:text-blue-200 transition-colors">Add City</span>
+            <span className="mt-1 sm:mt-2 md:mt-3 text-blue-700 dark:text-blue-300 font-medium text-xs sm:text-sm md:text-lg group-hover:text-blue-900 dark:group-hover:text-blue-200 transition-colors">Add City</span>
           </div>
         </div>
 
         {/* Instructions Section - Full Width like Main Clock */}
-        <div className="bg-white dark:bg-black border-b border-gray-200 dark:border-gray-700 p-4 sm:p-6 lg:p-8 xl:p-12 mb-4 sm:mb-6" style={{ marginTop: '15px' }}>
-          <h4 className="text-base sm:text-lg font-medium text-gray-800 mb-2">How to Use the World Clock</h4>
+        <div className="bg-white dark:bg-black border-b border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6 lg:p-8 xl:p-12 mb-3 sm:mb-4 md:mb-6" style={{ marginTop: '15px' }}>
+          <h4 className="text-sm sm:text-base md:text-lg font-medium text-gray-800 dark:text-white mb-2 sm:mb-3 md:mb-4">How to Use the World Clock</h4>
           <div className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm space-y-2">
             <p>
               Instantly check the current time and date in any city or time zone around the world. Our online world clock makes it easy to compare times, plan meetings, and stay in sync—no matter where you are.
             </p>
-            <ul className="list-disc pl-4 sm:pl-6">
+            <ul className="list-disc pl-3 sm:pl-4 md:pl-6 space-y-1">
               <li>
                 <strong>See your local time:</strong> The main clock shows your current time and date.
               </li>
@@ -427,24 +431,24 @@ const WorldClock: React.FC = () => {
         </div>
 
         {/* Modernized Popular Cities Section */}
-        <div className="bg-white dark:bg-black border-b border-gray-200 dark:border-gray-700 p-4 sm:p-6 lg:p-8 xl:p-12 mb-4 sm:mb-6">
-          <h3 className="text-xl sm:text-2xl font-bold text-blue-900 mb-6 flex items-center gap-2">
-            <svg className="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg>
+        <div className="bg-white dark:bg-black border-b border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6 lg:p-8 xl:p-12 mb-3 sm:mb-4 md:mb-6">
+          <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-blue-900 dark:text-blue-100 mb-3 sm:mb-4 md:mb-6 flex items-center gap-2">
+            <svg className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg>
             Popular Cities & Time Zones
           </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
             {popularCities.map((col, i) => (
-              <div key={i} className="bg-gray-50 dark:bg-gray-800 rounded-xl shadow-md p-4 flex flex-col gap-3 border border-blue-100 dark:border-blue-700 hover:shadow-xl transition-shadow">
+              <div key={i} className="bg-white dark:bg-gray-800 rounded-xl shadow-md py-3 sm:py-4 md:py-6 px-2 sm:px-3 md:px-4 flex flex-col gap-2 sm:gap-3 border border-blue-100 dark:border-blue-700 hover:shadow-xl transition-shadow">
                 <div className="flex items-center gap-2 mb-2">
-                  <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M2 12h20" /><path d="M12 2a15.3 15.3 0 0 1 0 20" /></svg>
-                  <span className="text-blue-700 dark:text-blue-300 font-semibold text-base">Cities</span>
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M2 12h20" /><path d="M12 2a15.3 15.3 0 0 1 0 20" /></svg>
+                  <span className="text-blue-700 dark:text-blue-300 font-semibold text-xs sm:text-sm md:text-base">Cities</span>
                 </div>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1 sm:gap-2">
                 {col.map(city => (
                     <Link
                       key={city}
                       to={getCityUrl(city)}
-                      className="bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-xs font-medium shadow-sm hover:bg-blue-200 dark:hover:bg-blue-700 transition-colors cursor-pointer border border-blue-200 dark:border-blue-600 hover:scale-105 transform"
+                      className="bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-200 px-1 sm:px-2 md:px-3 py-1 rounded-full text-xs font-medium shadow-sm hover:bg-blue-200 dark:hover:bg-blue-700 transition-colors cursor-pointer border border-blue-200 dark:border-blue-600 break-words hover:scale-105 transform"
                     >
                       {city}
                     </Link>
@@ -458,16 +462,16 @@ const WorldClock: React.FC = () => {
         {/* Add City Modal */}
         {showAddModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 p-2 sm:p-4">
-            <div className="bg-white rounded-lg shadow-lg max-w-lg w-full mx-2 sm:mx-4 max-h-[90vh] overflow-y-auto">
+            <div className="bg-white dark:bg-black rounded-lg shadow-lg max-w-lg w-full mx-2 sm:mx-4 max-h-[90vh] overflow-y-auto border border-gray-200 dark:border-gray-700">
               <div className="flex items-center justify-between px-4 sm:px-8 py-3 sm:py-5 rounded-t-lg" style={{ backgroundColor: '#0090DD' }}>
-                <h2 className="text-xl sm:text-2xl lg:text-3xl font-normal text-white">Add</h2>
-                <button onClick={() => setShowAddModal(false)} className="text-white hover:text-blue-100 text-xl sm:text-2xl lg:text-3xl"><X className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7" /></button>
+                <h2 className="text-lg sm:text-xl md:text-2xl font-normal text-white">Add City</h2>
+                <button onClick={() => setShowAddModal(false)} className="text-white hover:text-blue-100 transition-colors p-2 rounded-full hover:bg-white hover:bg-opacity-20"><X className="w-4 h-4 sm:w-5 sm:h-5" /></button>
               </div>
-              <div className="px-4 sm:px-8 pt-4 sm:pt-8 pb-0 space-y-4 sm:space-y-7">
+              <div className="px-4 sm:px-6 md:px-8 pt-4 sm:pt-6 md:pt-8 pb-0 space-y-3 sm:space-y-4 md:space-y-6">
                 <div>
-                  <label className="block text-sm sm:text-base font-normal text-gray-700 mb-2">Country</label>
+                  <label className="block text-xs sm:text-sm md:text-base font-medium text-gray-700 dark:text-gray-300 mb-1 sm:mb-2 uppercase tracking-wide">Country</label>
                   <select
-                    className="w-full h-10 sm:h-12 px-3 sm:px-4 text-sm sm:text-base border border-gray-300 rounded focus:ring-2 focus:ring-blue-400 focus:outline-none bg-white"
+                    className="w-full h-10 sm:h-12 px-3 sm:px-4 text-sm sm:text-base border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none bg-white dark:bg-gray-800 text-gray-800 dark:text-white transition-all"
                     value={selectedCountry}
                     onChange={e => {
                       setSelectedCountry(e.target.value);
@@ -482,9 +486,9 @@ const WorldClock: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm sm:text-base font-normal text-gray-700 mb-2">Time zone</label>
+                  <label className="block text-xs sm:text-sm md:text-base font-medium text-gray-700 dark:text-gray-300 mb-1 sm:mb-2 uppercase tracking-wide">Time zone</label>
                   <select
-                    className="w-full h-10 sm:h-12 px-3 sm:px-4 text-sm sm:text-base border border-gray-300 rounded focus:ring-2 focus:ring-blue-400 focus:outline-none bg-white"
+                    className="w-full h-10 sm:h-12 px-3 sm:px-4 text-sm sm:text-base border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none bg-white dark:bg-gray-800 text-gray-800 dark:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     value={selectedTz}
                     onChange={e => {
                       setSelectedTz(e.target.value);
@@ -502,19 +506,19 @@ const WorldClock: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm sm:text-base font-normal text-gray-700 mb-2">Title</label>
+                  <label className="block text-xs sm:text-sm md:text-base font-medium text-gray-700 dark:text-gray-300 mb-1 sm:mb-2 uppercase tracking-wide">Title</label>
                   <input
-                    className="w-full h-10 sm:h-12 px-3 sm:px-4 text-sm sm:text-base border border-gray-300 rounded focus:ring-2 focus:ring-blue-400 focus:outline-none bg-white"
+                    className="w-full h-10 sm:h-12 px-3 sm:px-4 text-sm sm:text-base border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none bg-white dark:bg-gray-800 text-gray-800 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-all"
                     value={customTitle}
                     onChange={e => setCustomTitle(e.target.value)}
                     placeholder="City name"
                   />
                 </div>
               </div>
-              <div className="flex flex-col sm:flex-row justify-end gap-3 sm:gap-4 px-4 sm:px-8 py-3 sm:py-5 border-t bg-gray-50 rounded-b-lg mt-2">
-                <button onClick={() => setShowAddModal(false)} className="w-full sm:w-24 h-10 border border-gray-300 rounded bg-white text-sm sm:text-base font-normal hover:bg-gray-100">Cancel</button>
+              <div className="flex flex-col sm:flex-row justify-end gap-3 sm:gap-4 px-4 sm:px-6 md:px-8 py-3 sm:py-4 md:py-5 border-t border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 rounded-b-lg mt-2">
+                <button onClick={() => setShowAddModal(false)} className="w-full sm:w-24 h-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-sm sm:text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700 transition-all">Cancel</button>
                 <button
-                  className="w-full sm:w-24 h-10 bg-green-500 text-white text-sm sm:text-base font-normal rounded hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                  className="w-full sm:w-24 h-10 bg-green-500 text-white text-sm sm:text-base font-medium rounded-lg hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all"
                   disabled={!selectedCountry || !selectedTz || !customTitle}
                   onClick={() => {
                     if (selectedCountry && selectedTz && customTitle) {
